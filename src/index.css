@@ -96,3 +96,47 @@ body {
 
   border-radius: 8px;
 }
+
+.search-input {
+  width: 100%;
+
+  padding: 14px;
+
+  margin: 20px 0;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+
+  font-size: 16px;
+}
+
+.category-container {
+  display: flex;
+
+  gap: 12px;
+
+  margin-bottom: 24px;
+
+  flex-wrap: wrap;
+}
+
+.category-container button {
+  padding: 10px 16px;
+
+  border: none;
+
+  background: white;
+
+  cursor: pointer;
+
+  border-radius: 8px;
+
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.active-category {
+  background: black !important;
+
+  color: white;
+}
