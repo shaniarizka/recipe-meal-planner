@@ -11,12 +11,14 @@ import RecipeDetail from "./pages/RecipeDetail";
 import AddRecipe from "./pages/AddRecipe";
 import MyRecipes from "./pages/MyRecipes";
 import MealPlanner from "./pages/MealPlanner";
-
 import dummyRecipes from "./data/dummyRecipes";
 
 function App() {
   const [recipes, setRecipes] =
     useState(dummyRecipes);
+
+  const [mealPlans, setMealPlans] =
+  useState([]);
 
   return (
     <BrowserRouter>
@@ -31,7 +33,11 @@ function App() {
         <Route
           path="/recipe/:id"
           element={
-            <RecipeDetail recipes={recipes} />
+            <RecipeDetail
+              recipes={recipes}
+              mealPlans={mealPlans}
+              setMealPlans={setMealPlans}
+            />
           }
         />
 
@@ -67,7 +73,11 @@ function App() {
 
         <Route
           path="/meal-planner"
-          element={<MealPlanner />}
+          element={<MealPlanner
+            recipes={recipes}
+            mealPlans={mealPlans}
+            setMealPlans={setMealPlans}
+          />}
         />
       </Routes>
     </BrowserRouter>

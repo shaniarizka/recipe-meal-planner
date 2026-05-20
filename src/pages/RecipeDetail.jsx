@@ -1,15 +1,40 @@
 import { useParams } from "react-router-dom";
 
-import dummyRecipes from "../data/dummyRecipes";
-
 import RecommendationSection from "../components/RecommendationSection";
 
-function RecipeDetail({ recipes }) {
+function RecipeDetail({
+  recipes,
+  mealPlans,
+  setMealPlans,
+}) {
   const { id } = useParams();
 
   const recipe = recipes.find(
     (item) => item.id === Number(id)
   );
+
+  const handleAddToMealPlanner = () => {
+    const newPlan = {
+      id: Date.now(),
+
+      userId: 1,
+
+      recipeId: recipe.id,
+
+      recipeTitle: recipe.title,
+
+      day: "Monday",
+
+      mealType: "Dinner",
+    };
+
+    setMealPlans([
+      ...mealPlans,
+      newPlan,
+    ]);
+
+    alert("Added to Meal Planner");
+  };
 
   if (!recipe) {
     return <h1>Recipe Not Found</h1>;
@@ -45,6 +70,13 @@ function RecipeDetail({ recipes }) {
       <h2>Steps</h2>
 
       <p>{recipe.steps}</p>
+
+      <button
+        onClick={handleAddToMealPlanner}
+        className="planner-btn"
+      >
+        Add to Meal Planner
+      </button>
 
       <RecommendationSection
         recipes={recipes}
