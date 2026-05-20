@@ -1,7 +1,12 @@
+import { useAuth } from "../context/AuthContext";
+
 function MealPlanner({
   mealPlans,
 }) {
-  const currentUserId = 1;
+  const { currentUser } = useAuth();
+
+  const currentUserId =
+    currentUser?.id;
 
   const myMealPlans = mealPlans.filter(
     (plan) =>

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-
+import { useAuth } from "../context/AuthContext";
 import RecommendationSection from "../components/RecommendationSection";
 
 function RecipeDetail({
@@ -8,16 +8,22 @@ function RecipeDetail({
   setMealPlans,
 }) {
   const { id } = useParams();
+  const { currentUser } = useAuth();
 
   const recipe = recipes.find(
     (item) => item.id === Number(id)
   );
 
   const handleAddToMealPlanner = () => {
+    if (!currentUser) {
+      alert("Please login first");
+      return;
+    }
+
     const newPlan = {
       id: Date.now(),
 
-      userId: 1,
+      userId: currentUser.id,
 
       recipeId: recipe.id,
 
@@ -28,10 +34,7 @@ function RecipeDetail({
       mealType: "Dinner",
     };
 
-    setMealPlans([
-      ...mealPlans,
-      newPlan,
-    ]);
+    setMealPlans([...mealPlans, newPlan]);
 
     alert("Added to Meal Planner");
   };

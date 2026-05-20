@@ -1,10 +1,14 @@
 import RecipeCard from "../components/RecipeCard";
+import { useAuth } from "../context/AuthContext";
 
 function MyRecipes({
   recipes,
   setRecipes,
 }) {
-  const currentUserId = 1;
+  const { currentUser } = useAuth();
+
+  const currentUserId =
+  currentUser?.id;
 
   const myRecipes = recipes.filter(
     (recipe) =>

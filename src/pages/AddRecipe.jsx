@@ -1,11 +1,13 @@
 import { useState } from "react";
-
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function AddRecipe({
   recipes,
   setRecipes,
 }) {
+  const { currentUser } = useAuth();
+  
   const navigate = useNavigate();
 
   const [title, setTitle] =
@@ -25,11 +27,16 @@ function AddRecipe({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (!currentUser) {
+      alert("Please login first");
+      return;
+    }
 
     const newRecipe = {
       id: Date.now(),
 
-      userId: 1,
+      userId: currentUser.id,
 
       title,
 
@@ -55,7 +62,7 @@ function AddRecipe({
       setImage(URL.createObjectURL(file));
     }
   };
-
+  
   return (
     <div className="form-container">
       <h1>Add Recipe</h1>
