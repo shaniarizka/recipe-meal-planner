@@ -8,7 +8,9 @@ function Navbar() {
 
   return (
     <nav className="navbar">
-      <h2>Recipe Planner</h2>
+      <h2 className="logo">
+        Recipe Planner
+      </h2>
 
       <div className="nav-links">
         <Link to="/">Home</Link>
@@ -26,15 +28,15 @@ function Navbar() {
         </Link>
 
         {currentUser ? (
-          <>
+          <div className="user-section">
             <span>
-              Hello, {currentUser.name}
+              Hi, {currentUser.name}
             </span>
 
             <button onClick={logout}>
               Logout
             </button>
-          </>
+          </div>
         ) : (
           <>
             <Link to="/login">

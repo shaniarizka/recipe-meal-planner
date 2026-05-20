@@ -33,6 +33,18 @@ function Home({ recipes }) {
 
   return (
     <div className="home-container">
+
+      <div className="hero-section">
+        <h1>
+          Discover Delicious Recipes
+        </h1>
+
+        <p>
+          Find, organize, and plan your
+          favorite meals easily.
+        </p>
+      </div>
+
       <h1>Recipe Finder</h1>
 
       <SearchBar
@@ -55,6 +67,7 @@ function Home({ recipes }) {
           />
         ))}
       </div>
+
     </div>
   );
 }
