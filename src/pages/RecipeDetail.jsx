@@ -4,10 +4,10 @@ import dummyRecipes from "../data/dummyRecipes";
 
 import RecommendationSection from "../components/RecommendationSection";
 
-function RecipeDetail() {
+function RecipeDetail({ recipes }) {
   const { id } = useParams();
 
-  const recipe = dummyRecipes.find(
+  const recipe = recipes.find(
     (item) => item.id === Number(id)
   );
 
@@ -47,7 +47,7 @@ function RecipeDetail() {
       <p>{recipe.steps}</p>
 
       <RecommendationSection
-        recipes={dummyRecipes}
+        recipes={recipes}
         currentRecipe={recipe}
       />
     </div>

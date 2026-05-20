@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import { useState } from "react";
+
 import Navbar from "./components/Navbar";
 
 import Home from "./pages/Home";
@@ -10,19 +12,60 @@ import AddRecipe from "./pages/AddRecipe";
 import MyRecipes from "./pages/MyRecipes";
 import MealPlanner from "./pages/MealPlanner";
 
+import dummyRecipes from "./data/dummyRecipes";
+
 function App() {
+  const [recipes, setRecipes] =
+    useState(dummyRecipes);
+
   return (
     <BrowserRouter>
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/recipe/:id" element={<RecipeDetail />} />
-        <Route path="/add-recipe" element={<AddRecipe />} />
-        <Route path="/my-recipes" element={<MyRecipes />} />
-        <Route path="/meal-planner" element={<MealPlanner />} />
+        <Route
+          path="/"
+          element={<Home recipes={recipes} />}
+        />
+
+        <Route
+          path="/recipe/:id"
+          element={
+            <RecipeDetail recipes={recipes} />
+          }
+        />
+
+        <Route
+          path="/add-recipe"
+          element={
+            <AddRecipe
+              recipes={recipes}
+              setRecipes={setRecipes}
+            />
+          }
+        />
+
+        <Route
+          path="/my-recipes"
+          element={
+            <MyRecipes recipes={recipes} />
+          }
+        />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        <Route
+          path="/meal-planner"
+          element={<MealPlanner />}
+        />
       </Routes>
     </BrowserRouter>
   );

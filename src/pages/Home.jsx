@@ -8,7 +8,7 @@ import SearchBar from "../components/SearchBar";
 
 import CategoryFilter from "../components/CategoryFilter";
 
-function Home() {
+function Home({ recipes }) {
   const [searchTerm, setSearchTerm] =
     useState("");
 
@@ -17,7 +17,7 @@ function Home() {
     setSelectedCategory,
   ] = useState("All");
 
-  const filteredRecipes = dummyRecipes.filter(
+  const filteredRecipes = recipes.filter(
     (recipe) => {
       const matchSearch = recipe.title
         .toLowerCase()
