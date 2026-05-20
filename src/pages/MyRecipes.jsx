@@ -1,7 +1,49 @@
-function MyRecipes() {
+import RecipeCard from "../components/RecipeCard";
+
+function MyRecipes({
+  recipes,
+  setRecipes,
+}) {
+  const currentUserId = 1;
+
+  const myRecipes = recipes.filter(
+    (recipe) =>
+      recipe.userId === currentUserId
+  );
+
+  const handleDelete = (id) => {
+    const updatedRecipes =
+      recipes.filter(
+        (recipe) => recipe.id !== id
+      );
+
+    setRecipes(updatedRecipes);
+  };
+
   return (
-    <div>
+    <div className="home-container">
       <h1>My Recipes</h1>
+
+      {myRecipes.length === 0 ? (
+        <p>No recipes found.</p>
+      ) : (
+        <div className="recipe-grid">
+          {myRecipes.map((recipe) => (
+            <div key={recipe.id}>
+              <RecipeCard recipe={recipe} />
+
+              <button
+                onClick={() =>
+                  handleDelete(recipe.id)
+                }
+                className="delete-btn"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -29,6 +29,8 @@ function AddRecipe({
     const newRecipe = {
       id: Date.now(),
 
+      userId: 1,
+
       title,
 
       category,

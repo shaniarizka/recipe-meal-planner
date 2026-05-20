@@ -1,6 +1,7 @@
 const dummyRecipes = [
   {
     id: 1,
+    userId: 1,
     title: "Nasi Goreng",
     category: "Makanan Berat",
     image:
@@ -19,6 +20,7 @@ const dummyRecipes = [
 
   {
     id: 2,
+    userId: 2,
     title: "Donat Coklat",
     category: "Kue",
     image:
@@ -36,6 +38,7 @@ const dummyRecipes = [
 
   {
     id: 3,
+    userId: 1, 
     title: "Es Teh Lemon",
     category: "Minuman",
     image:
@@ -53,6 +56,7 @@ const dummyRecipes = [
 
   {
     id: 4,
+    userId: 2, 
     title: "Kentang Goreng",
     category: "Cemilan",
     image:

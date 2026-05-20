@@ -48,7 +48,10 @@ function App() {
         <Route
           path="/my-recipes"
           element={
-            <MyRecipes recipes={recipes} />
+            <MyRecipes
+              recipes={recipes}
+              setRecipes={setRecipes}
+            />
           }
         />
 
