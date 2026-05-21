@@ -30,7 +30,13 @@ function MyRecipes({
       <h1>My Recipes</h1>
 
       {myRecipes.length === 0 ? (
-        <p>No recipes found.</p>
+        <div className="empty-state">
+          <h2>No Recipes Yet</h2>
+
+          <p>
+            Start creating your favorite recipe.
+          </p>
+        </div>
       ) : (
         <div className="recipe-grid">
           {myRecipes.map((recipe) => (

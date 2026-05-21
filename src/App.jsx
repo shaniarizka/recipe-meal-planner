@@ -13,6 +13,9 @@ import MyRecipes from "./pages/MyRecipes";
 import MealPlanner from "./pages/MealPlanner";
 import dummyRecipes from "./data/dummyRecipes";
 import EditRecipe from "./pages/EditRecipe";
+import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
+import EditMealPlan from "./pages/EditMealPlan";
 
 function App() {
   const [recipes, setRecipes] =
@@ -45,10 +48,12 @@ function App() {
         <Route
           path="/add-recipe"
           element={
-            <AddRecipe
-              recipes={recipes}
-              setRecipes={setRecipes}
-            />
+            <ProtectedRoute>
+              <AddRecipe
+                recipes={recipes}
+                setRecipes={setRecipes}
+              />
+            </ProtectedRoute>
           }
         />
 
@@ -90,7 +95,20 @@ function App() {
             />
           }
         />
+
+        <Route
+          path="/edit-meal/:id"
+          element={
+            <ProtectedRoute>
+              <EditMealPlan
+                mealPlans={mealPlans}
+                setMealPlans={setMealPlans}
+              />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
