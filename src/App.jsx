@@ -12,6 +12,7 @@ import AddRecipe from "./pages/AddRecipe";
 import MyRecipes from "./pages/MyRecipes";
 import MealPlanner from "./pages/MealPlanner";
 import dummyRecipes from "./data/dummyRecipes";
+import EditRecipe from "./pages/EditRecipe";
 
 function App() {
   const [recipes, setRecipes] =
@@ -78,6 +79,16 @@ function App() {
             mealPlans={mealPlans}
             setMealPlans={setMealPlans}
           />}
+        />
+
+        <Route
+          path="/edit-recipe/:id"
+          element={
+            <EditRecipe
+              recipes={recipes}
+              setRecipes={setRecipes}
+            />
+          }
         />
       </Routes>
     </BrowserRouter>

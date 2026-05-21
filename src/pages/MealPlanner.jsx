@@ -15,7 +15,7 @@ function MealPlanner({
 
   return (
     <div className="home-container">
-      <h1>Meal Planner</h1>
+      <h1>Weekly Meal Planner</h1>
 
       {myMealPlans.length === 0 ? (
         <p>No meal plans yet.</p>
@@ -26,17 +26,15 @@ function MealPlanner({
               key={plan.id}
               className="meal-card"
             >
-              <h3>{plan.recipeTitle}</h3>
-
-              <p>
-                <strong>Day:</strong>{" "}
+              <span className="meal-day">
                 {plan.day}
-              </p>
+              </span>
 
-              <p>
-                <strong>Meal:</strong>{" "}
-                {plan.mealType}
-              </p>
+              <h3>
+                {plan.recipeTitle}
+              </h3>
+
+              <p>{plan.mealType}</p>
             </div>
           ))}
         </div>

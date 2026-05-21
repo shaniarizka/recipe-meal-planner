@@ -410,3 +410,61 @@ body {
     font-size: 30px;
   }
 }
+
+.planner-options {
+  display: flex;
+
+  gap: 16px;
+
+  margin-top: 20px;
+
+  margin-bottom: 20px;
+}
+
+.planner-options select {
+  padding: 12px;
+
+  border-radius: 8px;
+
+  border: 1px solid #ddd;
+
+  font-size: 16px;
+}
+
+.meal-day {
+  display: inline-block;
+
+  background: #ffe8df;
+
+  color: #ff6b35;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  margin-bottom: 12px;
+
+  font-size: 14px;
+}
+
+.meal-card h3 {
+  margin-bottom: 8px;
+}
+
+.edit-btn {
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+
+  background: #ff9800;
+
+  color: white;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  margin-top: 10px;
+}

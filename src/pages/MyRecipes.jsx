@@ -1,5 +1,6 @@
 import RecipeCard from "../components/RecipeCard";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 function MyRecipes({
   recipes,
@@ -44,6 +45,12 @@ function MyRecipes({
               >
                 Delete
               </button>
+              
+              <Link to={`/edit-recipe/${recipe.id}`}>
+                <button className="edit-btn">
+                  Edit
+                </button>
+              </Link>
             </div>
           ))}
         </div>

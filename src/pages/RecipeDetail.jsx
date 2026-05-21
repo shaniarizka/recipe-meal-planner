@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import RecommendationSection from "../components/RecommendationSection";
+import { useState } from "react";
 
 function RecipeDetail({
   recipes,
@@ -22,16 +23,11 @@ function RecipeDetail({
 
     const newPlan = {
       id: Date.now(),
-
       userId: currentUser.id,
-
       recipeId: recipe.id,
-
       recipeTitle: recipe.title,
-
-      day: "Monday",
-
-      mealType: "Dinner",
+      day: selectedDay,
+      mealType: mealType,
     };
 
     setMealPlans([...mealPlans, newPlan]);
@@ -42,6 +38,12 @@ function RecipeDetail({
   if (!recipe) {
     return <h1>Recipe Not Found</h1>;
   }
+
+  const [selectedDay, setSelectedDay] =
+  useState("Monday");
+
+  const [mealType, setMealType] =
+    useState("Breakfast");
 
   return (
     <div className="detail-container">
@@ -80,6 +82,36 @@ function RecipeDetail({
       >
         Add to Meal Planner
       </button>
+
+      <div className="planner-options">
+
+        <select
+          value={selectedDay}
+          onChange={(e) =>
+            setSelectedDay(e.target.value)
+          }
+        >
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+          <option>Sunday</option>
+        </select>
+
+        <select
+          value={mealType}
+          onChange={(e) =>
+            setMealType(e.target.value)
+          }
+        >
+          <option>Breakfast</option>
+          <option>Lunch</option>
+          <option>Dinner</option>
+        </select>
+
+      </div>
 
       <RecommendationSection
         recipes={recipes}
