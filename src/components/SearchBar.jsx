@@ -1,12 +1,16 @@
 function SearchBar({ searchTerm, setSearchTerm }) {
   return (
-    <input
-      type="text"
-      placeholder="Search recipe..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="search-input"
-    />
+    <div className="search-wrapper">
+      <input
+        type="text"
+        placeholder="Search recipes..."
+        value={searchTerm}
+        onChange={(e) =>
+          setSearchTerm(e.target.value)
+        }
+        className="search-input"
+      />
+    </div>
   );
 }
 

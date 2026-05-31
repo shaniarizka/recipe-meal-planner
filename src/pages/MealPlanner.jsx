@@ -1,6 +1,7 @@
 import { useAuth } from "../context/AuthContext";
-
 import { Link } from "react-router-dom";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
 function MealPlanner({
   mealPlans,
@@ -8,29 +9,51 @@ function MealPlanner({
   setMealPlans,
 }) {
   const { currentUser } = useAuth();
-
-  const currentUserId =
-    currentUser?.id;
-
+  const currentUserId = currentUser?.uid;
   const myMealPlans = mealPlans.filter(
     (plan) =>
       plan.userId === currentUserId
   );
-
   const recipesMap = {};
-
   recipes.forEach((recipe) => {
     recipesMap[recipe.id] = recipe;
   });
-
-  const handleDeleteMeal = (id) => {
-    const updatedMealPlans =
-      mealPlans.filter(
-        (plan) => plan.id !== id
+  const handleDeleteMeal = async (
+    id
+  ) => {
+    const confirmDelete =
+      window.confirm(
+        "Delete this meal plan?"
       );
-
-    setMealPlans(updatedMealPlans);
+    if (!confirmDelete) return;
+    try {
+      await deleteDoc(
+        doc(
+          db,
+          "mealPlans",
+          id
+        )
+      );
+      setMealPlans(
+        mealPlans.filter(
+          (plan) =>
+            plan.id !== id
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
 
   return (
     <div className="home-container">
@@ -38,6 +61,7 @@ function MealPlanner({
 
       {myMealPlans.length === 0 ? (
         <div className="empty-state">
+          <h1>🍽️</h1>
           <h2>No Meal Plans Yet</h2>
 
           <p>
@@ -45,65 +69,70 @@ function MealPlanner({
           </p>
         </div>
       ) : (
-        <div className="meal-grid">
-          {myMealPlans.map((plan) => {
-            const recipe =
-              recipesMap[plan.recipeId];
+        <div className="weekly-planner">
+          {days.map((day) => {
+            const dayPlans =
+              myMealPlans.filter(
+                (plan) => plan.day === day
+              );
 
             return (
-              <Link
-                key={plan.id}
-                to={`/recipe/${plan.recipeId}`}
-                className="meal-link"
+              <div
+                key={day}
+                className="planner-day"
               >
-                <div className="meal-card">
-                  <img
-                    src={recipe?.image}
-                    alt={plan.recipeTitle}
-                    className="meal-image"
-                  />
+                <h2>{day}</h2>
 
-                  <span className="meal-day">
-                    {plan.day}
-                  </span>
+                {dayPlans.length === 0 ? (
+                  <p>No meals planned</p>
+                ) : (
+                  dayPlans.map((plan) => {
+                    const recipe =
+                      recipesMap[plan.recipeId];
 
-                  <h3>
-                    {plan.recipeTitle}
-                  </h3>
-
-                  <p>{plan.mealType}</p>
-
-                  <div className="meal-actions">
-
-                    <Link
-                      to={`/edit-meal/${plan.id}`}
-                      onClick={(e) =>
-                        e.stopPropagation()
-                      }
-                    >
-                      <button
-                        className="edit-btn"
+                    return (
+                      <div
+                        key={plan.id}
+                        className="meal-card"
                       >
-                        Edit
-                      </button>
-                    </Link>
+                        <Link
+                          to={`/recipe/${plan.recipeId}`}
+                          className="meal-link"
+                        >
+                          <img
+                            src={recipe?.image}
+                            alt={plan.recipeTitle}
+                            className="meal-image"
+                          />
+                          <h3>{plan.recipeTitle}</h3>
+                          <p className="meal-type">
+                            🍽️ {plan.mealType}
+                          </p>
+                        </Link>
 
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
+                        <div className="meal-actions">
+                          <Link
+                            to={`/edit-meal/${plan.id}`}
+                          >
+                            <button className="edit-btn">
+                              Edit
+                            </button>
+                          </Link>
 
-                        handleDeleteMeal(
-                          plan.id
-                        );
-                      }}
-                      className="delete-btn"
-                    >
-                      Delete
-                    </button>
-
-                  </div>
-                </div>
-              </Link>
+                          <button
+                            className="delete-meal-btn"
+                            onClick={() =>
+                              handleDeleteMeal(plan.id)
+                            }
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
             );
           })}
         </div>

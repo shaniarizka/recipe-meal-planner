@@ -1,49 +1,31 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-
-import { useAuth } from "../context/AuthContext";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 function Login() {
   const navigate = useNavigate();
-
-  const { login } = useAuth();
-
-  const [email, setEmail] =
-    useState("");
-
-  const [password, setPassword] =
-    useState("");
-
-  const handleLogin = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const users =
-      JSON.parse(
-        localStorage.getItem("users")
-      ) || [];
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-    const foundUser = users.find(
-      (user) =>
-        user.email === email &&
-        user.password === password
-    );
-
-    if (!foundUser) {
+      navigate("/");
+    } catch (error) {
       alert("Invalid credentials");
-
-      return;
     }
-
-    login(foundUser);
-
-    navigate("/");
   };
 
   return (
     <div className="form-container">
       <h1>Login</h1>
-
       <form onSubmit={handleLogin}>
         <input
           type="email"

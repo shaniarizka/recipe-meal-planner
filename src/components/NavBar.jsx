@@ -1,51 +1,89 @@
-import { Link } from "react-router-dom";
-
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
 
 function Navbar() {
-  const { currentUser, logout } =
-    useAuth();
+  const { currentUser, logout } = useAuth();
+  console.log(currentUser);
+  const [showMenu, setShowMenu] =
+    useState(false);
+  const handleLogout = () => {
+    const confirmLogout =
+      window.confirm(
+        "Are you sure you want to logout?"
+      );
 
+    if (confirmLogout) {
+      logout();
+    }
+  };
   return (
     <nav className="navbar">
       <h2 className="logo">
         Recipe Planner
       </h2>
-
       <div className="nav-links">
-        <Link to="/">Home</Link>
+        <NavLink to="/">
+          Home
+        </NavLink>
 
-        <Link to="/add-recipe">
-          Add Recipe
-        </Link>
+        {currentUser && (
+          <>
+            <NavLink to="/add-recipe">
+              Add Recipe
+            </NavLink>
 
-        <Link to="/my-recipes">
-          My Recipes
-        </Link>
+            <NavLink to="/my-recipes">
+              My Recipes
+            </NavLink>
 
-        <Link to="/meal-planner">
-          Meal Planner
-        </Link>
+            <NavLink to="/meal-planner">
+              Meal Planner
+            </NavLink>
+
+            <NavLink to="/favorites">
+              Favorites
+            </NavLink>
+          </>
+        )}
 
         {currentUser ? (
-          <div className="user-section">
-            <span>
-              Hi, {currentUser.name}
-            </span>
-
-            <button onClick={logout}>
-              Logout
+          <div className="profile-section">
+            <button
+              className="profile-btn"
+              onClick={() =>
+                setShowMenu(!showMenu)
+              }
+            >
+              👤 {
+                currentUser?.displayName ||
+                currentUser?.email?.split("@")[0]
+              }
             </button>
+            {showMenu && (
+              <div className="profile-menu">
+                <p>
+                  {
+                    currentUser?.email
+                  }
+                </p>
+                <button
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <>
-            <Link to="/login">
+            <NavLink to="/login">
               Login
-            </Link>
+            </NavLink>
 
-            <Link to="/register">
+            <NavLink to="/register">
               Register
-            </Link>
+            </NavLink>
           </>
         )}
       </div>

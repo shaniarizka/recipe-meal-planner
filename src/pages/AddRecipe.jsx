@@ -1,72 +1,72 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
 function AddRecipe({
   recipes,
   setRecipes,
 }) {
   const { currentUser } = useAuth();
-  
   const navigate = useNavigate();
-
-  const [title, setTitle] =
-    useState("");
-
-  const [category, setCategory] =
-    useState("");
-
-  const [ingredients, setIngredients] =
-    useState("");
-
-  const [steps, setSteps] =
-    useState("");
-
-  const [image, setImage] =
-    useState("");
-
-  const handleSubmit = (e) => {
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [ingredients, setIngredients] = useState("");
+  const [steps, setSteps] = useState("");
+  const [image, setImage] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!currentUser) {
       alert("Please login first");
       return;
     }
+    try {
+      const docRef = await addDoc(
+        collection(db, "recipes"),
+        {
+          userId: currentUser.uid,
+          title,
+          category,
+          ingredients:
+            ingredients.split(","),
+          steps,
+          image,
+          createdAt:
+            new Date().toISOString(),
+        }
+      );
 
-    const newRecipe = {
-      id: Date.now(),
+      const newRecipe = {
+        id: docRef.id,
+        userId: currentUser.uid,
+        title,
+        category,
+        ingredients:
+          ingredients.split(","),
+        steps,
+        image,
+      };
 
-      userId: currentUser.id,
+      setRecipes([
+        ...recipes,
+        newRecipe,
+      ]);
 
-      title,
+      alert("Recipe Added");
 
-      category,
-
-      ingredients:
-        ingredients.split(","),
-
-      steps,
-
-      image,
-    };
-
-    setRecipes([...recipes, newRecipe]);
-
-    navigate("/");
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      setImage(URL.createObjectURL(file));
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      alert(
+        "Failed to add recipe"
+      );
     }
   };
   
   return (
     <div className="form-container">
       <h1>Add Recipe</h1>
-
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -88,19 +88,15 @@ function AddRecipe({
           <option value="">
             Select Category
           </option>
-
           <option value="Makanan Berat">
             Makanan Berat
           </option>
-
           <option value="Cemilan">
             Cemilan
           </option>
-
           <option value="Kue">
             Kue
           </option>
-
           <option value="Minuman">
             Minuman
           </option>
@@ -126,9 +122,12 @@ function AddRecipe({
         />
 
         <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
+          type="text"
+          placeholder="Image URL"
+          value={image}
+          onChange={(e) =>
+            setImage(e.target.value)
+          }
         />
 
         <button type="submit">

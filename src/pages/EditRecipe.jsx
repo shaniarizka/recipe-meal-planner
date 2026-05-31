@@ -9,12 +9,13 @@ function EditRecipe({
   setRecipes,
 }) {
   const { id } = useParams();
-
   const navigate = useNavigate();
-
   const recipe = recipes.find(
-    (item) => item.id === Number(id)
+    (item) => item.id === id
   );
+  if (!recipe) {
+    return <h1>Recipe Not Found</h1>;
+  }
 
   const [title, setTitle] =
     useState(recipe.title);

@@ -1,47 +1,55 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
+import {
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
-const AuthContext = createContext();
+const AuthContext =
+  createContext();
 
 export function AuthProvider({
   children,
 }) {
-  const [currentUser, setCurrentUser] =
-    useState(
-      JSON.parse(
-        localStorage.getItem("currentUser")
-      ) || null
-    );
+  const [
+    currentUser,
+    setCurrentUser,
+  ] = useState(null);
 
-  const login = (userData) => {
-    setCurrentUser(userData);
+  const [loading, setLoading] =
+    useState(true);
 
-    localStorage.setItem(
-      "currentUser",
-      JSON.stringify(userData)
-    );
-  };
+  useEffect(() => {
+    const unsubscribe =
+      onAuthStateChanged(
+        auth,
+        (user) => {
+          setCurrentUser(user);
 
-  const logout = () => {
-    setCurrentUser(null);
+          setLoading(false);
+        }
+      );
 
-    localStorage.removeItem(
-      "currentUser"
-    );
+    return unsubscribe;
+  }, []);
+
+  const logout = async () => {
+    await signOut(auth);
   };
 
   return (
     <AuthContext.Provider
       value={{
         currentUser,
-        login,
         logout,
       }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

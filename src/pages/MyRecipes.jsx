@@ -1,28 +1,28 @@
 import RecipeCard from "../components/RecipeCard";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
 function MyRecipes({
   recipes,
   setRecipes,
 }) {
   const { currentUser } = useAuth();
-
-  const currentUserId =
-  currentUser?.id;
-
+  const currentUserId = currentUser?.uid;
   const myRecipes = recipes.filter(
     (recipe) =>
       recipe.userId === currentUserId
   );
-
-  const handleDelete = (id) => {
-    const updatedRecipes =
-      recipes.filter(
-        (recipe) => recipe.id !== id
+  const handleDelete = async (id) => {
+    try {
+      await deleteDoc(doc(db, "recipes", id));
+      setRecipes(
+        recipes.filter((r) => r.id !== id)
       );
-
-    setRecipes(updatedRecipes);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
