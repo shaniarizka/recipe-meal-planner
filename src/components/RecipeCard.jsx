@@ -20,6 +20,11 @@ function RecipeCard({ recipe }) {
           {recipe.category}
         </span>
         <h3>{recipe.title}</h3>
+        {recipe.source === "user" && (
+          <span className="recipe-badge">
+            👤 My Recipe
+          </span>
+        )}
         <p className="recipe-meta">
           📂 {recipe.category} • 🥘 {recipe.ingredients?.length || 0} Ingredients
         </p>

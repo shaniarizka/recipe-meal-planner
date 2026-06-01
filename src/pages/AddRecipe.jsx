@@ -88,17 +88,37 @@ function AddRecipe({
           <option value="">
             Select Category
           </option>
-          <option value="Makanan Berat">
-            Makanan Berat
+
+          <option value="Breakfast">
+            Breakfast
           </option>
-          <option value="Cemilan">
-            Cemilan
+
+          <option value="Chicken">
+            Chicken
           </option>
-          <option value="Kue">
-            Kue
+
+          <option value="Beef">
+            Beef
           </option>
-          <option value="Minuman">
-            Minuman
+
+          <option value="Seafood">
+            Seafood
+          </option>
+
+          <option value="Pasta">
+            Pasta
+          </option>
+
+          <option value="Dessert">
+            Dessert
+          </option>
+
+          <option value="Vegetarian">
+            Vegetarian
+          </option>
+
+          <option value="Side">
+            Side
           </option>
         </select>
 

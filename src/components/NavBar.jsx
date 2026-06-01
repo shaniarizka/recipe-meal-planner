@@ -62,16 +62,27 @@ function Navbar() {
             </button>
             {showMenu && (
               <div className="profile-menu">
+
                 <p>
-                  {
-                    currentUser?.email
-                  }
+                  {currentUser?.email}
                 </p>
+
+                <NavLink
+                  to="/profile"
+                  onClick={() =>
+                    setShowMenu(false)
+                  }
+                  className="profile-link"
+                >
+                  Profile
+                </NavLink>
+
                 <button
                   onClick={handleLogout}
                 >
                   Logout
                 </button>
+
               </div>
             )}
           </div>

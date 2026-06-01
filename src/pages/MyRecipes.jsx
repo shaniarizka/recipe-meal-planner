@@ -14,7 +14,16 @@ function MyRecipes({
     (recipe) =>
       recipe.userId === currentUserId
   );
+  const totalMyRecipes = myRecipes.length;
   const handleDelete = async (id) => {
+    const confirmDelete =
+      window.confirm(
+        "Delete this recipe?"
+      );
+
+    if (!confirmDelete) {
+      return;
+    }
     try {
       await deleteDoc(doc(db, "recipes", id));
       setRecipes(
@@ -28,13 +37,27 @@ function MyRecipes({
   return (
     <div className="home-container">
       <h1>My Recipes</h1>
-
+      <Link
+        to="/add-recipe"
+        className="add-recipe-btn"
+      >
+        + Add New Recipe
+      </Link>
+      <div className="my-recipes-info">
+        <p>
+          Total Recipes:
+          {" "}
+          <strong>
+            {totalMyRecipes}
+          </strong>
+        </p>
+      </div>
       {myRecipes.length === 0 ? (
         <div className="empty-state">
-          <h2>No Recipes Yet</h2>
+          <h2>No Recipes Yet 🍳</h2>
 
           <p>
-            Start creating your favorite recipe.
+             Start by adding your first recipe.
           </p>
         </div>
       ) : (
@@ -42,21 +65,26 @@ function MyRecipes({
           {myRecipes.map((recipe) => (
             <div key={recipe.id}>
               <RecipeCard recipe={recipe} />
+              <div className="recipe-actions">
 
-              <button
-                onClick={() =>
-                  handleDelete(recipe.id)
-                }
-                className="delete-btn"
-              >
-                Delete
-              </button>
-              
-              <Link to={`/edit-recipe/${recipe.id}`}>
-                <button className="edit-btn">
-                  Edit
+                <Link
+                  to={`/edit-recipe/${recipe.id}`}
+                >
+                  <button>
+                    Edit
+                  </button>
+                </Link>
+
+                <button
+                  onClick={() =>
+                    handleDelete(recipe.id)
+                  }
+                  className="delete-btn"
+                >
+                  Delete
                 </button>
-              </Link>
+
+              </div>
             </div>
           ))}
         </div>

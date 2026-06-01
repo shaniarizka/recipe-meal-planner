@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-
 import { useNavigate } from "react-router-dom";
-
 import { useState } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
 function EditRecipe({
   recipes,
@@ -28,41 +28,46 @@ function EditRecipe({
       recipe.ingredients.join(", ")
     );
 
-  const [steps, setSteps] =
-    useState(recipe.steps);
-
-  const [image, setImage] =
-    useState(recipe.image);
-
-  const handleSubmit = (e) => {
+  const [steps, setSteps] = useState(recipe.steps);
+  const [image, setImage] = useState(recipe.image);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const updatedRecipes = recipes.map(
-      (item) => {
-        if (item.id === recipe.id) {
-          return {
-            ...item,
-
-            title,
-
-            category,
-
-            ingredients:
-              ingredients.split(","),
-
-            steps,
-
-            image,
-          };
+    try {
+      await updateDoc(
+        doc(
+          db,
+          "recipes",
+          recipe.id
+        ),
+        {
+          title,
+          category,
+          ingredients:
+            ingredients.split(","),
+          steps,
         }
+      );
 
-        return item;
-      }
-    );
+      const updatedRecipes =
+        recipes.map((item) => {
+          if (item.id === recipe.id) {
+            return {
+              ...item,
+              title,
+              category,
+              ingredients:
+                ingredients.split(","),
+              steps,
+            };
+          }
 
-    setRecipes(updatedRecipes);
-
-    navigate("/my-recipes");
+          return item;
+        });
+      setRecipes(updatedRecipes);
+      navigate("/my-recipes");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleImageUpload = (e) => {
