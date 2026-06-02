@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage"; // Tambahan import untuk Storage
 
 const firebaseConfig = {
   apiKey: "AIzaSyClWqtc2ySs6sYkbodYUntuzhcud_OjvaQ",
@@ -12,6 +13,10 @@ const firebaseConfig = {
   measurementId: "G-6GCF6BEGNG"
 };
 
+// Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
+
+// Export layanan yang digunakan
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const storage = getStorage(app); // Tambahan export untuk Storage
