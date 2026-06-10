@@ -35,7 +35,8 @@ function AddRecipe({ recipes, setRecipes }) {
         category,
         ingredients: ingredients.split(","),
         steps,
-        image: imageUrl, // Link yang didapat dari storage
+        image: imageUrl,
+        source: "user",
         createdAt: new Date().toISOString(),
       });
 
@@ -47,6 +48,7 @@ function AddRecipe({ recipes, setRecipes }) {
         ingredients: ingredients.split(","),
         steps,
         image: imageUrl,
+        source: "user",
       };
 
       setRecipes([...recipes, newRecipe]);
