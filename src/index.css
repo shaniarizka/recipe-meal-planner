@@ -69,9 +69,7 @@ body {
   background: white;
   border-radius: 12px;
   padding: 15px;
-  box-shadow:
-    0 4px 15px
-    rgba(0,0,0,0.15);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   z-index: 999;
 }
 
@@ -82,6 +80,12 @@ body {
 
 .profile-menu button {
   width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #ef4444;
+  color: white;
+  cursor: pointer;
 }
 
 .profile-link {
@@ -95,6 +99,32 @@ body {
   background: #f3f4f6;
 }
 
+.profile-card {
+  max-width: 700px;
+  margin: auto;
+  background: white;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+}
+
+.profile-card h1 {
+  margin-bottom: 25px;
+  color: #1f2937;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.profile-info p {
+  padding: 15px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
 .home-container {
   padding: 32px;
 }
@@ -105,30 +135,26 @@ body {
 
 .recipe-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
-.recipe-card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: 0.3s;
+@media (max-width: 992px) {
+  .recipe-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.recipe-card:hover {
-  transform: translateY(-5px);
+@media (max-width: 768px) {
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .recipe-card img {
   width: 100%;
-  height: 240px;
+  height: 330px;
   object-fit: cover;
-}
-
-.recipe-content {
-  padding: 16px;
 }
 
 .recipe-content h3 {
@@ -141,9 +167,11 @@ body {
 }
 
 .recipe-content button {
-  padding: 10px 16px;
+  padding: 12px 16px;
   border: none;
-  background: black;
+  width: 100%;
+  margin-top: 12px;
+  background: #ff6b35;
   color: white;
   cursor: pointer;
   border-radius: 8px;
@@ -180,7 +208,31 @@ body {
 .recipe-actions {
   display: flex;
   gap: 10px;
-  margin-top: 12px;
+  padding: 0 16px 16px;
+}
+
+.recipe-actions a,
+.recipe-actions button {
+  flex: 1;
+}
+
+.recipe-actions button {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: #f59e0b;
+  color: white;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
 }
 
 .category-filter {
@@ -355,53 +407,322 @@ body {
   }
 }
 
-.form-container {
-  max-width: 600px;
-  margin: auto;
-  padding: 32px;
-}
+/* --- FULL WEB LOGIN LAYOUT --- */
 
-.form-container h1 {
-  margin-bottom: 24px;
-}
-
-.form-container form {
+.login-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  min-height: calc(100vh - 70px); /* Menghitung tinggi layar dikurangi navbar */
+  background: white;
 }
 
-.form-container input,
-.form-container select,
-.form-container textarea {
-  padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.form-container textarea {
-  min-height: 120px;
-}
-
-.form-container button {
-  padding: 14px;
-  border: none;
-  background: black;
+/* SISI KIRI: Background Oranye (Visual) */
+.login-visual {
+  flex: 1.2;
+  background-color: #ff6b35; /* Warna Oranye Home Page */
+  background-image: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
   color: white;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
-.delete-btn {
+.visual-content {
+  max-width: 500px;
+}
+
+.visual-content h1 {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  font-weight: 800;
+}
+
+.visual-content p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.visual-badges {
+  display: flex;
+  gap: 15px;
+}
+
+.visual-badges span {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* SISI KANAN: Form Section */
+.login-form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.login-box {
   width: 100%;
-  padding: 12px;
-  border: none;
-  background: crimson;
+  max-width: 420px;
+}
+
+.brand-tag {
+  color: #ff6b35;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-size: 12px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.login-header h1 {
+  font-size: 2.2rem;
+  color: #1a202c;
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  color: #718096;
+  margin-bottom: 35px;
+}
+
+.input-field {
+  margin-bottom: 20px;
+}
+
+.input-field label {
+  display: block;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.label-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.forgot-link {
+  color: #ff6b35;
+  font-size: 13px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.input-field input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #edf2f7;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.input-field input:focus {
+  border-color: #ff6b35;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+}
+
+.btn-login-web {
+  width: 100%;
+  padding: 16px;
+  background: #ff6b35;
   color: white;
-  border-radius: 8px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
   margin-top: 10px;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn-login-web:hover {
+  background: #e65a2b;
+  transform: translateY(-2px);
+}
+
+.web-divider {
+  text-align: center;
+  margin: 30px 0;
+  position: relative;
+}
+
+.web-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #edf2f7;
+  z-index: 1;
+}
+
+.web-divider span {
+  background: white;
+  padding: 0 15px;
+  font-size: 12px;
+  color: #a0aec0;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+}
+
+.social-grid {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-social {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #edf2f7;
+  background: white;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-social:hover {
+  background: #f7fafc;
+}
+
+.footer-note {
+  text-align: center;
+  margin-top: 40px;
+  color: #718096;
+}
+
+.footer-note a {
+  color: #ff6b35;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* RESPONSIVITAS: Jadi satu kolom kalau dibuka di HP */
+@media (max-width: 992px) {
+  .login-visual {
+    display: none;
+  }
+  .login-wrapper {
+    justify-content: center;
+    background: #f7fafc;
+  }
+  .login-form-section {
+    background: white;
+    margin: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  }
+}
+
+/* --- FULL WEB REGISTER LAYOUT --- */
+
+.register-wrapper {
+  display: flex;
+  min-height: calc(100vh - 70px);
+  background: white;
+}
+
+/* SISI KIRI: Background Visual (Tema Sama dengan Login tapi variasi teks) */
+.register-visual {
+  flex: 1.2;
+  background-color: #ff6b35; 
+  background-image: linear-gradient(135deg, #ff8c5a 0%, #ff6b35 100%); /* Kebalikan gradient login agar beda dikit */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  color: white;
+}
+
+.visual-features {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-item {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+/* SISI KANAN: Section Form */
+.register-form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.register-box {
+  width: 100%;
+  max-width: 420px;
+}
+
+.register-header h1 {
+  font-size: 2.2rem;
+  color: #1a202c;
+  margin-bottom: 8px;
+}
+
+.register-header p {
+  color: #718096;
+  margin-bottom: 35px;
+}
+
+/* Menggunakan gaya input yang sama dengan login untuk konsistensi */
+.btn-register-web {
+  width: 100%;
+  padding: 16px;
+  background: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+}
+
+.btn-register-web:hover {
+  background: #e65a2b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 107, 53, 0.3);
+}
+
+/* Responsivitas untuk Register */
+@media (max-width: 992px) {
+  .register-visual {
+    display: none;
+  }
+  .register-wrapper {
+    justify-content: center;
+    background: #f7fafc;
+  }
+  .register-form-section {
+    background: white;
+    margin: 20px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  }
 }
 
 .planner-btn {
@@ -439,22 +760,12 @@ body {
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0,0,0,.08);
-}
-
-.delete-meal-btn {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  background: crimson;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .meal-card img {
   width: 100%;
-  height: 180px;
+  height: 330px;
   object-fit: cover;
 }
 
@@ -532,14 +843,26 @@ body {
 }
 
 /* CARD */
-.recipe-card {
+.recipe-card-wrapper {
   background: white;
   border-radius: 20px;
   overflow: hidden;
-  transition: .3s;
-  box-shadow:
-    0 6px 20px rgba(0,0,0,.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
+
+.recipe-card {
+  flex: 1;
+}
+
+.recipe-card {
+  background: white;
+  transition: .3s;
+}
+
 
 .recipe-card:hover {
   transform:
@@ -557,12 +880,8 @@ body {
   border-radius: 999px;
   font-size: 13px;
   font-weight: 600;
-}
-
-.recipe-content button {
-  width: 100%;
-  margin-top: 12px;
-  background: #ff6b35;
+  display: inline-block;
+  margin-bottom: 12px;
 }
 
 @media (max-width: 768px) {
@@ -636,17 +955,6 @@ body {
   padding: 8px 14px;
   background: #f3f4f6;
   border-radius: 20px;
-}
-
-.edit-btn {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  background: #ff9800;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
 }
 
 .empty-state {
@@ -736,10 +1044,32 @@ select:focus {
   display: flex;
   gap: 10px;
   margin-top: 16px;
+  margin-bottom: 14px;
+  padding: 0 12px 12px;
+}
+
+.meal-actions a,
+.meal-actions button {
+  flex: 1;
 }
 
 .meal-actions button {
-  flex: 1;
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-meal-btn {
+  background: #f59e0b;
+  color: white;
+}
+
+.delete-meal-btn {
+  background: #ef4444;
+  color: white;
 }
 
 .stats-container {
@@ -768,3 +1098,234 @@ select:focus {
   color: gray;
 }
 
+/* --- NEW WEB-WIDE ADD RECIPE STYLING --- */
+
+.web-header {
+  margin-bottom: 30px;
+}
+
+.web-header h1 {
+  font-size: 32px;
+  color: #1f2937;
+  margin-bottom: 5px;
+}
+
+.web-header p {
+  color: #64748b;
+}
+
+/* Membuat form menjadi grid 2 kolom di layar Web */
+.add-recipe-grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Membagi dua sama rata */
+  gap: 40px;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.form-column-left, .form-column-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-field-web {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-field-web label {
+  font-weight: 700;
+  color: #374151;
+  font-size: 14px;
+}
+
+.input-field-web input,
+.input-field-web select,
+.input-field-web textarea {
+  padding: 15px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  background: #f8fafc;
+  transition: 0.3s ease;
+}
+
+.input-field-web input:focus,
+.input-field-web select:focus,
+.input-field-web textarea:focus {
+  border-color: #ff6b35;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+}
+
+/* Tinggi textarea khusus */
+.small-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.large-textarea {
+  min-height: 380px; /* Lebih tinggi karena kolom langkah memasak biasanya panjang */
+  resize: none;
+}
+
+.web-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: auto; /* Tombol akan selalu berada di bawah kolom kanan */
+}
+
+.btn-primary-web {
+  padding: 16px 35px;
+  background-color: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-primary-web:hover {
+  background-color: #e65a2b;
+  transform: translateY(-2px);
+}
+
+.btn-secondary-web {
+  padding: 16px 30px;
+  background: transparent;
+  color: #64748b;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Tetap responsif untuk tablet/HP */
+@media (max-width: 992px) {
+  .add-recipe-grid-form {
+    grid-template-columns: 1fr;
+    padding: 25px;
+  }
+  
+  .large-textarea {
+    min-height: 250px;
+  }
+}
+
+/* addrecipe*/
+.file-upload-wrapper {
+  padding: 10px;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  text-align: center;
+}
+
+.file-upload-wrapper input {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.file-name {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #ff6b35;
+  font-weight: 600;
+}
+
+.edit-form-card {
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* EDIT MEAL PLAN */
+
+.edit-meal-wrapper {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.edit-meal-hero {
+  background:
+    linear-gradient(
+      135deg,
+      #ff6b35,
+      #ff9966
+    );
+
+  color: white;
+  padding: 40px;
+  border-radius: 24px;
+
+  margin-bottom: 24px;
+
+  box-shadow:
+    0 10px 30px rgba(255,107,53,.25);
+}
+
+.edit-meal-hero h1 {
+  font-size: 38px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.edit-meal-hero p {
+  opacity: .95;
+  max-width: 500px;
+}
+
+.edit-meal-card {
+  background: white;
+
+  padding: 35px;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.08);
+}
+
+.edit-meal-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.edit-meal-card select {
+  width: 100%;
+  padding: 16px;
+
+  border: 1.5px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  font-size: 16px;
+}
+
+.edit-meal-card select:focus {
+  border-color: #ff6b35;
+  background: white;
+
+  box-shadow:
+    0 0 0 4px rgba(255,107,53,.12);
+}

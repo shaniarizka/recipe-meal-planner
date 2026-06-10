@@ -67,86 +67,100 @@ function EditRecipe({
   };
 
   return (
-    <div className="form-container">
-      <h1>Edit Recipe</h1>
+    <div className="home-container">
+      <div className="web-header">
+        <h1>Edit Recipe 🍳</h1>
+        <p>Update your recipe details.</p>
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) =>
-            setTitle(e.target.value)
-          }
-          required
-        />
+      <form
+        onSubmit={handleSubmit}
+        className="edit-form-card"
+      >
+        <div className="input-field-web">
+          <label>Recipe Title</label>
 
-        <select
-          value={category}
-          onChange={(e) =>
-            setCategory(e.target.value)
-          }
-          required
-        >
-          <option value="Breakfast">
-            Breakfast
-          </option>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) =>
+              setTitle(e.target.value)
+            }
+          />
+        </div>
 
-          <option value="Chicken">
-            Chicken
-          </option>
+        <div className="input-field-web">
+          <label>Category</label>
 
-          <option value="Beef">
-            Beef
-          </option>
+          <select
+            value={category}
+            onChange={(e) =>
+              setCategory(e.target.value)
+            }
+          >
+            <option value="Breakfast">Breakfast</option>
+            <option value="Chicken">Chicken</option>
+            <option value="Beef">Beef</option>
+            <option value="Seafood">Seafood</option>
+            <option value="Pasta">Pasta</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Side">Side</option>
+          </select>
+        </div>
 
-          <option value="Seafood">
-            Seafood
-          </option>
+        <div className="input-field-web">
+          <label>Ingredients</label>
 
-          <option value="Pasta">
-            Pasta
-          </option>
+          <textarea
+            value={ingredients}
+            onChange={(e) =>
+              setIngredients(e.target.value)
+            }
+          />
+        </div>
 
-          <option value="Dessert">
-            Dessert
-          </option>
+        <div className="input-field-web">
+          <label>Cooking Steps</label>
 
-          <option value="Vegetarian">
-            Vegetarian
-          </option>
+          <textarea
+            value={steps}
+            onChange={(e) =>
+              setSteps(e.target.value)
+            }
+          />
+        </div>
 
-          <option value="Side">
-            Side
-          </option>
-        </select>
+        <div className="input-field-web">
+          <label>Image URL</label>
 
-        <input
-          type="text"
-          value={ingredients}
-          onChange={(e) =>
-            setIngredients(e.target.value)
-          }
-          required
-        />
+          <input
+            type="text"
+            value={image}
+            onChange={(e) =>
+              setImage(e.target.value)
+            }
+          />
+        </div>
 
-        <textarea
-          value={steps}
-          onChange={(e) =>
-            setSteps(e.target.value)
-          }
-          required
-        />
+        <div className="web-form-actions">
+          <button
+            type="button"
+            className="btn-secondary-web"
+            onClick={() =>
+              navigate(-1)
+            }
+          >
+            Cancel
+          </button>
 
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-        />
-
-        <button type="submit">
-          Update Recipe
-        </button>
+          <button
+            type="submit"
+            className="btn-primary-web"
+          >
+            Update Recipe
+          </button>
+        </div>
       </form>
     </div>
   );

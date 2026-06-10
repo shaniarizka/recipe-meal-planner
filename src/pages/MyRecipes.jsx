@@ -63,27 +63,22 @@ function MyRecipes({
       ) : (
         <div className="recipe-grid">
           {myRecipes.map((recipe) => (
-            <div key={recipe.id}>
+            <div key={recipe.id} className="recipe-card-wrapper">
               <RecipeCard recipe={recipe} />
-              <div className="recipe-actions">
 
-                <Link
-                  to={`/edit-recipe/${recipe.id}`}
-                >
-                  <button>
+              <div className="recipe-actions">
+                <Link to={`/edit-recipe/${recipe.id}`}>
+                  <button className="edit-btn">
                     Edit
                   </button>
                 </Link>
 
                 <button
-                  onClick={() =>
-                    handleDelete(recipe.id)
-                  }
+                  onClick={() => handleDelete(recipe.id)}
                   className="delete-btn"
                 >
                   Delete
                 </button>
-
               </div>
             </div>
           ))}

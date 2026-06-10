@@ -16,6 +16,7 @@ import Favorites from "./pages/Favorites";
 import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "./firebase/firebase";
 import { fetchMeals } from "./service/mealApi";
+import Profile from "./pages/Profile";
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -152,6 +153,8 @@ if (loading) {
             />
           }
         />
+
+        <Route path="/profile" element={<Profile />} />
 
         <Route
           path="/login"
