@@ -34,17 +34,13 @@ function EditRecipe({
     e.preventDefault();
     try {
       await updateDoc(
-        doc(
-          db,
-          "recipes",
-          recipe.id
-        ),
+        doc(db, "recipes", recipe.id),
         {
           title,
           category,
-          ingredients:
-            ingredients.split(","),
+          ingredients: ingredients.split(","),
           steps,
+          image,
         }
       );
 
@@ -55,9 +51,9 @@ function EditRecipe({
               ...item,
               title,
               category,
-              ingredients:
-                ingredients.split(","),
+              ingredients: ingredients.split(","),
               steps,
+              image,
             };
           }
 
@@ -67,14 +63,6 @@ function EditRecipe({
       navigate("/my-recipes");
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      setImage(URL.createObjectURL(file));
     }
   };
 
@@ -99,20 +87,36 @@ function EditRecipe({
           }
           required
         >
-          <option value="Makanan Berat">
-            Makanan Berat
+          <option value="Breakfast">
+            Breakfast
           </option>
 
-          <option value="Cemilan">
-            Cemilan
+          <option value="Chicken">
+            Chicken
           </option>
 
-          <option value="Kue">
-            Kue
+          <option value="Beef">
+            Beef
           </option>
 
-          <option value="Minuman">
-            Minuman
+          <option value="Seafood">
+            Seafood
+          </option>
+
+          <option value="Pasta">
+            Pasta
+          </option>
+
+          <option value="Dessert">
+            Dessert
+          </option>
+
+          <option value="Vegetarian">
+            Vegetarian
+          </option>
+
+          <option value="Side">
+            Side
           </option>
         </select>
 
@@ -134,9 +138,10 @@ function EditRecipe({
         />
 
         <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
+          type="text"
+          placeholder="Image URL"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
         />
 
         <button type="submit">

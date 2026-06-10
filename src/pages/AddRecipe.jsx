@@ -28,12 +28,11 @@ function AddRecipe({
           userId: currentUser.uid,
           title,
           category,
-          ingredients:
-            ingredients.split(","),
+          ingredients: ingredients.split(","),
           steps,
           image,
-          createdAt:
-            new Date().toISOString(),
+          source: "user",
+          createdAt: new Date().toISOString(),
         }
       );
 
@@ -42,10 +41,10 @@ function AddRecipe({
         userId: currentUser.uid,
         title,
         category,
-        ingredients:
-          ingredients.split(","),
+        ingredients: ingredients.split(","),
         steps,
         image,
+        source: "user",
       };
 
       setRecipes([
