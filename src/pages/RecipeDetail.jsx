@@ -128,7 +128,10 @@ function RecipeDetail({
         {/* Kolom Kiri */}
         <div className="detail-image-section">
           <img
-            src={recipe.image}
+            src={
+              recipe.image ||
+              "https://via.placeholder.com/600x400?text=No+Image"
+            }
             alt={recipe.title}
             className="detail-image"
           />
