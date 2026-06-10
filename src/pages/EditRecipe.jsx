@@ -34,17 +34,13 @@ function EditRecipe({
     e.preventDefault();
     try {
       await updateDoc(
-        doc(
-          db,
-          "recipes",
-          recipe.id
-        ),
+        doc(db, "recipes", recipe.id),
         {
           title,
           category,
-          ingredients:
-            ingredients.split(","),
+          ingredients: ingredients.split(","),
           steps,
+          image,
         }
       );
 
@@ -55,9 +51,9 @@ function EditRecipe({
               ...item,
               title,
               category,
-              ingredients:
-                ingredients.split(","),
+              ingredients: ingredients.split(","),
               steps,
+              image,
             };
           }
 
@@ -70,78 +66,101 @@ function EditRecipe({
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  };
-
   return (
-    <div className="form-container">
-      <h1>Edit Recipe</h1>
+    <div className="home-container">
+      <div className="web-header">
+        <h1>Edit Recipe 🍳</h1>
+        <p>Update your recipe details.</p>
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) =>
-            setTitle(e.target.value)
-          }
-          required
-        />
+      <form
+        onSubmit={handleSubmit}
+        className="edit-form-card"
+      >
+        <div className="input-field-web">
+          <label>Recipe Title</label>
 
-        <select
-          value={category}
-          onChange={(e) =>
-            setCategory(e.target.value)
-          }
-          required
-        >
-          <option value="Makanan Berat">
-            Makanan Berat
-          </option>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) =>
+              setTitle(e.target.value)
+            }
+          />
+        </div>
 
-          <option value="Cemilan">
-            Cemilan
-          </option>
+        <div className="input-field-web">
+          <label>Category</label>
 
-          <option value="Kue">
-            Kue
-          </option>
+          <select
+            value={category}
+            onChange={(e) =>
+              setCategory(e.target.value)
+            }
+          >
+            <option value="Breakfast">Breakfast</option>
+            <option value="Chicken">Chicken</option>
+            <option value="Beef">Beef</option>
+            <option value="Seafood">Seafood</option>
+            <option value="Pasta">Pasta</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Side">Side</option>
+          </select>
+        </div>
 
-          <option value="Minuman">
-            Minuman
-          </option>
-        </select>
+        <div className="input-field-web">
+          <label>Ingredients</label>
 
-        <input
-          type="text"
-          value={ingredients}
-          onChange={(e) =>
-            setIngredients(e.target.value)
-          }
-          required
-        />
+          <textarea
+            value={ingredients}
+            onChange={(e) =>
+              setIngredients(e.target.value)
+            }
+          />
+        </div>
 
-        <textarea
-          value={steps}
-          onChange={(e) =>
-            setSteps(e.target.value)
-          }
-          required
-        />
+        <div className="input-field-web">
+          <label>Cooking Steps</label>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-        />
+          <textarea
+            value={steps}
+            onChange={(e) =>
+              setSteps(e.target.value)
+            }
+          />
+        </div>
 
-        <button type="submit">
-          Update Recipe
-        </button>
+        <div className="input-field-web">
+          <label>Image URL</label>
+
+          <input
+            type="text"
+            value={image}
+            onChange={(e) =>
+              setImage(e.target.value)
+            }
+          />
+        </div>
+
+        <div className="web-form-actions">
+          <button
+            type="button"
+            className="btn-secondary-web"
+            onClick={() =>
+              navigate(-1)
+            }
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            className="btn-primary-web"
+          >
+            Update Recipe
+          </button>
+        </div>
       </form>
     </div>
   );
