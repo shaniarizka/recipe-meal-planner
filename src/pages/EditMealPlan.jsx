@@ -58,40 +58,71 @@ function EditMealPlan({
   };
 
   return (
-    <div className="form-container">
-      <h1>Edit Meal Plan</h1>
-      <form onSubmit={handleSubmit}>
-        <select
-          value={day}
-          onChange={(e) =>
-            setDay(e.target.value)
-          }
-        >
-          <option>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>
-          <option>Saturday</option>
-          <option>Sunday</option>
-        </select>
+    <div className="edit-meal-wrapper">
 
-        <select
-          value={mealType}
-          onChange={(e) =>
-            setMealType(e.target.value)
-          }
-        >
-          <option>Breakfast</option>
-          <option>Lunch</option>
-          <option>Dinner</option>
-        </select>
+      <div className="edit-meal-hero">
+        <div>
+          <span className="brand-tag">
+            RECIPE PLANNER
+          </span>
 
-        <button type="submit">
-          Update Meal Plan
-        </button>
+          <h1>Edit Meal Plan 🍽️</h1>
 
-      </form>
+          <p>
+            Update your schedule and keep your
+            weekly meals organized.
+          </p>
+        </div>
+      </div>
+
+      <div className="edit-meal-card">
+
+        <form onSubmit={handleSubmit}>
+
+          <div className="input-field-web">
+            <label>Select Day</label>
+
+            <select
+              value={day}
+              onChange={(e) =>
+                setDay(e.target.value)
+              }
+            >
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+            </select>
+          </div>
+
+          <div className="input-field-web">
+            <label>Meal Type</label>
+
+            <select
+              value={mealType}
+              onChange={(e) =>
+                setMealType(e.target.value)
+              }
+            >
+              <option>Breakfast</option>
+              <option>Lunch</option>
+              <option>Dinner</option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            className="btn-primary-web"
+          >
+            Save Changes
+          </button>
+
+        </form>
+
+      </div>
     </div>
   );
 }
