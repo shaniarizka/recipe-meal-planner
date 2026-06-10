@@ -1,122 +1,212 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RecipeDetail from "./pages/RecipeDetail";
+import AddRecipe from "./pages/AddRecipe";
+import MyRecipes from "./pages/MyRecipes";
+import MealPlanner from "./pages/MealPlanner";
+import EditRecipe from "./pages/EditRecipe";
+import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
+import EditMealPlan from "./pages/EditMealPlan";
+import Favorites from "./pages/Favorites";
+import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { db } from "./firebase/firebase";
+import { fetchMeals } from "./service/mealApi";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [recipes, setRecipes] = useState([]);
+  const [mealPlans, setMealPlans] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  useEffect(() => {
+    fetchRecipes();
+    fetchFavorites();
+    fetchMealPlans();
+  }, []);
+  const [loading, setLoading] = useState(true);
+  const fetchRecipes = async () => {
+    try {
+      const firestoreSnapshot =
+        await getDocs(
+          collection(db, "recipes")
+        );
 
+      const firestoreRecipes =
+        firestoreSnapshot.docs.map(
+          (doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })
+        );
+
+      const apiRecipes =
+        await fetchMeals();
+
+      setRecipes([
+        ...firestoreRecipes,
+        ...apiRecipes,
+      ]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchMealPlans =
+    async () => {
+      try {
+        const snapshot =
+          await getDocs(
+            collection(
+              db,
+              "mealPlans"
+            )
+          );
+
+        const mealPlanData =
+          snapshot.docs.map(
+            (doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })
+          );
+
+        setMealPlans(
+          mealPlanData
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  const fetchFavorites = async () => {
+    try {
+      const snapshot =
+        await getDocs(
+          collection(db, "favorites")
+        );
+
+      const favoriteData =
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+      setFavorites(favoriteData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+if (loading) {
+  return <h2>Loading...</h2>;
+}
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <BrowserRouter>
+      <Navbar />
 
-      <div className="ticks"></div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+          <Home 
+            recipes={recipes} 
+            mealPlans={mealPlans}
+            favorites={favorites}
+          />}
+        />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <Route
+          path="/recipe/:id"
+          element={
+            <RecipeDetail
+              recipes={recipes}
+              mealPlans={mealPlans}
+              setMealPlans={setMealPlans}
+              favorites={favorites}
+              setFavorites={setFavorites}
+            />
+          }
+        />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <Route
+          path="/add-recipe"
+          element={
+            <ProtectedRoute>
+              <AddRecipe
+                recipes={recipes}
+                setRecipes={setRecipes}
+              />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-recipes"
+          element={
+            <MyRecipes
+              recipes={recipes}
+              setRecipes={setRecipes}
+            />
+          }
+        />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        <Route
+          path="/meal-planner"
+          element={<MealPlanner
+            recipes={recipes}
+            mealPlans={mealPlans}
+            setMealPlans={setMealPlans}
+          />}
+        />
+
+        <Route
+          path="/edit-recipe/:id"
+          element={
+            <EditRecipe
+              recipes={recipes}
+              setRecipes={setRecipes}
+            />
+          }
+        />
+
+        <Route
+          path="/edit-meal/:id"
+          element={
+            <ProtectedRoute>
+              <EditMealPlan
+                mealPlans={mealPlans}
+                setMealPlans={setMealPlans}
+              />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/favorites"
+          element={
+            <Favorites
+              recipes={recipes}
+              favorites={favorites}
+            />
+          }
+        />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
