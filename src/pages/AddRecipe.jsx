@@ -2,41 +2,34 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import Storage functions
-import { db, storage } from "../firebase/firebase"; // Import storage yang sudah diexport
+import { db } from "../firebase/firebase";
 
 function AddRecipe({ recipes, setRecipes }) {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [steps, setSteps] = useState("");
-  const [imageFile, setImageFile] = useState(null); // State untuk file gambar
-  const [uploading, setUploading] = useState(false); // State loading saat upload
+  const [imageUrl, setImageUrl] = useState(""); // ✅ ganti file → URL
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!currentUser) return alert("Please login first");
-    if (!imageFile) return alert("Please select an image first");
 
-    setUploading(true); // Mulai loading
+    if (!currentUser) {
+      alert("Please login first");
+      return;
+    }
 
     try {
-      // 1. PROSES UPLOAD KE FIREBASE STORAGE
-      const storageRef = ref(storage, `recipes/${Date.now()}_${imageFile.name}`);
-      await uploadBytes(storageRef, imageFile);
-      const imageUrl = await getDownloadURL(storageRef); // Ambil link hasil upload
-
-      // 2. SIMPAN DATA KE FIRESTORE (Gunakan imageUrl hasil upload)
       const docRef = await addDoc(collection(db, "recipes"), {
         userId: currentUser.uid,
         title,
         category,
-        ingredients: ingredients.split(","),
+        ingredients: ingredients.split(",").map(i => i.trim()),
         steps,
-        image: imageUrl,
-        source: "user",
+        image: imageUrl, // ✅ langsung pakai URL
         createdAt: new Date().toISOString(),
       });
 
@@ -45,23 +38,22 @@ function AddRecipe({ recipes, setRecipes }) {
         userId: currentUser.uid,
         title,
         category,
-        ingredients: ingredients.split(","),
+        ingredients: ingredients.split(",").map(i => i.trim()),
         steps,
         image: imageUrl,
-        source: "user",
       };
 
       setRecipes([...recipes, newRecipe]);
+
       alert("Recipe Published!");
       navigate("/my-recipes");
+
     } catch (error) {
-      console.error(error);
-      alert("Failed to upload image or save recipe");
-    } finally {
-      setUploading(false); // Selesai loading
+      console.error("Error adding recipe:", error);
+      alert("Failed to save recipe");
     }
   };
-  
+
   return (
     <div className="home-container">
       <div className="web-header">
@@ -70,15 +62,26 @@ function AddRecipe({ recipes, setRecipes }) {
       </div>
 
       <form onSubmit={handleSubmit} className="add-recipe-grid-form">
+
         <div className="form-column-left">
+
           <div className="input-field-web">
             <label>Recipe Title</label>
-            <input type="text" placeholder="e.g. Special Fried Rice" value={title} onChange={(e) => setTitle(e.target.value)} required />
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
           </div>
 
           <div className="input-field-web">
             <label>Category</label>
-            <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
               <option value="">Select Category</option>
               <option value="Breakfast">Breakfast</option>
               <option value="Chicken">Chicken</option>
@@ -92,38 +95,55 @@ function AddRecipe({ recipes, setRecipes }) {
           </div>
 
           <div className="input-field-web">
-            <label>Ingredients (separate with comma)</label>
-            <textarea className="small-textarea" placeholder="Garlic, Onion, Salt, Rice..." value={ingredients} onChange={(e) => setIngredients(e.target.value)} required />
+            <label>Ingredients (comma separated)</label>
+            <textarea
+              value={ingredients}
+              onChange={(e) => setIngredients(e.target.value)}
+              required
+            />
           </div>
 
-          {/* INPUT FILE GAMBAR BARU */}
+          {/* ✅ FIX: IMAGE URL INPUT */}
           <div className="input-field-web">
-            <label>Recipe Image (Upload File)</label>
-            <div className="file-upload-wrapper">
-                <input 
-                   type="file" 
-                   accept="image/*" 
-                   onChange={(e) => setImageFile(e.target.files[0])} 
-                   required
-                />
-                {imageFile && <p className="file-name">Selected: {imageFile.name}</p>}
-            </div>
+            <label>Recipe Image URL</label>
+            <input
+              type="text"
+              placeholder="Paste image link (https://...)"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              required
+            />
           </div>
+
         </div>
 
         <div className="form-column-right">
+
           <div className="input-field-web h-full">
             <label>Cooking Steps</label>
-            <textarea className="large-textarea" placeholder="1. Heat the oil... 2. Fry the garlic..." value={steps} onChange={(e) => setSteps(e.target.value)} required />
+            <textarea
+              value={steps}
+              onChange={(e) => setSteps(e.target.value)}
+              required
+            />
           </div>
-          
+
           <div className="web-form-actions">
-            <button type="button" className="btn-secondary-web" onClick={() => navigate(-1)} disabled={uploading}>Discard</button>
-            <button type="submit" className="btn-primary-web" disabled={uploading}>
-              {uploading ? "Uploading..." : "Publish Recipe"}
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="btn-secondary-web"
+            >
+              Discard
+            </button>
+
+            <button type="submit" className="btn-primary-web">
+              Publish Recipe
             </button>
           </div>
+
         </div>
+
       </form>
     </div>
   );
