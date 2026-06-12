@@ -92,10 +92,7 @@ function Home({
           <h2>{myMealPlans.length}</h2>
           <p>My Meal Plans</p>
         </div>
-        <div className="stat-card">
-          <h2>{totalUserRecipes}</h2>
-          <p>Community Recipes</p>
-        </div>
+        
         <div className="stat-card">
           <h2>{myFavorites.length}</h2>
           <p>My Favorites</p>
